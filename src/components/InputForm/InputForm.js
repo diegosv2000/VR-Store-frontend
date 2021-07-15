@@ -9,7 +9,7 @@ const useStyles = makeStyles(() => ({
   label: {
     color: '#1F1D21',
     fontWeight: '600',
-    marginBottom:'0.5rem'
+    marginBottom: '0.5rem',
   },
   input: {
     padding: '0.5rem',
@@ -32,7 +32,6 @@ const InputForm = (props) => {
   const classes = useStyles();
   return (
     <div className={classes.inputContainer}>
-      {' '}
       <label className={classes.label}>{props.label}</label>
       <input
         className={classes.input}
@@ -41,6 +40,7 @@ const InputForm = (props) => {
         onBlur={props.setData}
         placeholder={props.placeholder}
         type={props.type}
+        name={props.name}
       />
     </div>
   );

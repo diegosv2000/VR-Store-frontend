@@ -7,6 +7,21 @@ import Modal from '@material-ui/core/Modal';
 import Backdrop from '@material-ui/core/Backdrop';
 import Fade from '@material-ui/core/Fade';
 
+const months = [
+  'Ene',
+  'Feb',
+  'Mar',
+  'Abr',
+  'May',
+  'Jun',
+  'Jul',
+  'Ago',
+  'Set',
+  'Oct',
+  'Nov',
+  'Dic',
+];
+
 const useStyles = makeStyles((theme) => ({
   container: {
     display: 'grid',
@@ -83,7 +98,7 @@ const useStyles = makeStyles((theme) => ({
     padding: '1rem 0',
     background: 'white',
     minWidth: '25rem',
-    borderRadius:'0.3rem',
+    borderRadius: '0.3rem',
     '& h2': {
       borderBottom: '1px solid #CFD1D6',
       padding: '0 1rem 0.2rem',
@@ -91,18 +106,18 @@ const useStyles = makeStyles((theme) => ({
   },
   inputsModal: {
     padding: '1rem',
-    display:'grid',
-    gridGap:'1rem'
+    display: 'grid',
+    gridGap: '1rem',
   },
-  upload:{
-    padding:'0.2rem 1rem',
-    backgroundColor:'#2DEE7A',
-    color:'black',
-    fontWeight:'600',
-    borderRadius:'0.2rem',
-    border:'none',
-    margin:'0 auto 0 0'
-  }
+  upload: {
+    padding: '0.2rem 1rem',
+    backgroundColor: '#2DEE7A',
+    color: 'black',
+    fontWeight: '600',
+    borderRadius: '0.2rem',
+    border: 'none',
+    margin: '0 auto 0 0',
+  },
 }));
 const Admin = () => {
   const classes = useStyles();
@@ -115,19 +130,25 @@ const Admin = () => {
   const handleClose = () => {
     setOpen(false);
   };
+  const date = new Date();
 
+  const dateToday = {
+    day: date.getDate(),
+    month: months[date.getMonth()],
+    year: date.getFullYear(),
+  };
+  console.log('\n DATE');
+  console.log(dateToday);
   return (
     <div className={classes.container}>
       <div className={classes.headerAdmin}>
         <h2>Todos los Productos</h2>
-        <div>Hoy: May 27, 2021</div>
+        <div>
+          Hoy: {`${dateToday.month} ${dateToday.day}, ${dateToday.year}`}
+        </div>
       </div>
       <div>
         <div className={classes.addContent}>
-          <div className={classes.search}>
-            <img src={search} alt="search" />
-            <input placeholder="Search..." />
-          </div>
           <button className={classes.addButton} onClick={handleOpen}>
             <img src={plus} alt="plus" /> Añadir producto
           </button>
@@ -137,7 +158,7 @@ const Admin = () => {
         <Card
           title="Mermelada de Frambuesa"
           section="Lácteos"
-          src="http://assets.stickpng.com/images/5aaba1567603fc558cffbfce.png"
+          src="https://www.livinghome.pe/wp-content/uploads/2020/09/mermelada-frambuesa.jpg"
         />
       </div>
       <Modal
@@ -156,26 +177,18 @@ const Admin = () => {
           <div className={classes.modalForm}>
             <h2>Agregar Producto</h2>
             <div className={classes.inputsModal}>
-              <InputForm
-                label="Nombre"
-                placeholder="Fanta Light"
-                type="text"
-              />
-              <InputForm
-                label="Sección"
-                placeholder="Bebidas"
-                type="text"
-              />
-              <InputForm
-                label="Precio (S/.)"
-                placeholder="1.50"
-                type="text"
-              />
-              <TextArea label="Descripción"
+              <InputForm label="Nombre" placeholder="Fanta Light" type="text" />
+              <InputForm label="Precio (S/.)" placeholder="1.50" type="text" />
+              <TextArea
+                label="Descripción"
                 placeholder="Fanta light es una bebiba..."
-                type="text" /><button className={classes.upload}>Subir fotos</button>
+                type="text"
+              />
+              <button className={classes.upload}>Subir fotos</button>
             </div>
-            <button className={classes.addButton} style={{margin:'1rem'}}>Agregar producto</button>
+            <button className={classes.addButton} style={{ margin: '1rem' }}>
+              Agregar producto
+            </button>
           </div>
         </Fade>
       </Modal>

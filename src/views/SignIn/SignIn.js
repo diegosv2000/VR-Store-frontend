@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { InputForm } from 'components';
 import { makeStyles } from '@material-ui/core';
+import axios from 'axios';
 
 const useStyles = makeStyles(() => ({
   formContainer: {
@@ -41,21 +42,95 @@ const useStyles = makeStyles(() => ({
 
 const SignIn = () => {
   const classes = useStyles();
+  const [data, setData] = useState({
+    dni: '',
+    name: '',
+    contact: '',
+    email: '',
+    password: '',
+  });
+  const setInput = (e) => {
+    e.preventDefault();
+    setData({
+      ...data,
+      [e.target.name]: e.target.value,
+    });
+  };
+  const [registered, setRegistered] = useState(false);
+  const sendData = (e) => {
+    e.preventDefault();
+    console.log(data);
+    let dataUser = JSON.stringify({
+      DNI: data.dni,
+      Name: data.name,
+      Contact: data.contact,
+      Email: data.email,
+      Password: data.password,
+    });
+
+    const config = {
+      method: 'post',
+      url: 'https://raumented.herokuapp.com/api/addSeller',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      data: dataUser,
+    };
+
+    axios(config)
+      .then(function (response) {
+        let res = JSON.stringify(response.data);
+        console.log(JSON.stringify(response.data));
+        alert(res);
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+  };
   return (
     <div className={classes.formContainer}>
       <form className={classes.form}>
         <h2 className={classes.titleForm}>Iniciar Sesión</h2>
         <div className={classes.inputContent}>
-          <InputForm label="Nombres" placeholder="Miguel" type="text" />
-          <InputForm label="Apellidos" placeholder="Andrade" type="text" />
+          <InputForm
+            label="DNI"
+            placeholder="76685214"
+            type="text"
+            name="dni"
+            setData={setInput}
+          />
+          <InputForm
+            label="Nombre Completo"
+            placeholder="Miguel Andrade"
+            type="text"
+            name="name"
+            setData={setInput}
+          />
+          <InputForm
+            label="Contacto"
+            placeholder="+51 987 654 321"
+            type="text"
+            name="contact"
+            setData={setInput}
+          />
           <InputForm
             label="Email"
             placeholder="example@gmail.com"
             type="email"
+            name="email"
+            setData={setInput}
           />
-          <InputForm label="Contraseña" placeholder="******" type="password" />
+          <InputForm
+            label="Contraseña"
+            placeholder="******"
+            type="password"
+            name="password"
+            setData={setInput}
+          />
         </div>
-        <button className={classes.buttonForm}>Registrarse</button>
+        <button className={classes.buttonForm} onClick={sendData}>
+          Registrarse
+        </button>
       </form>
     </div>
   );

@@ -44,12 +44,6 @@ const routes = [
     component: () => <Home />,
     exact: true,
   },
-
-  // {
-  //   path: '*',
-  //   component: () => <NotFound />,
-  //   exact: true,
-  // },
 ];
 
 export default routes;
