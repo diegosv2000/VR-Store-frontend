@@ -87,7 +87,7 @@ const EditProfile = () => {
 
     const newConfig = {
       method: 'put',
-      url: 'https://raumented.herokuapp.com/api/editSeller/GOEqJXoZ0hbSxXBYnBKl',
+      url: `https://raumented.herokuapp.com/api/editSeller/${userId}`,
       headers: {
         'Content-Type': 'application/json',
       },
