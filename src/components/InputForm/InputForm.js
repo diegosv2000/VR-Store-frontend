@@ -41,6 +41,7 @@ const InputForm = (props) => {
         placeholder={props.placeholder}
         type={props.type}
         name={props.name}
+        defaultValue={props.defaultValue}
       />
     </div>
   );

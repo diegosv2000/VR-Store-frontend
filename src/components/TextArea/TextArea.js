@@ -17,7 +17,7 @@ const useStyles = makeStyles(() => ({
     borderRadius: '0.2rem',
     boxShadow: 'inset 0px 1px 4px rgba(0, 0, 0, 0.2)',
     transition: '.3s',
-    minHeight:'5rem',
+    minHeight: '5rem',
     '&:hover': {
       border: '1px solid #4B0483',
       boxShadow: 'inset 0px 1px 4px rgba(0, 0, 0, 0)',
@@ -41,7 +41,9 @@ const TextArea = (props) => {
         onKeyUp={props.setData}
         onBlur={props.setData}
         placeholder={props.placeholder}
+        name={props.name}
         type={props.type}
+        defaultValue={props.defaultValue}
       />
     </div>
   );

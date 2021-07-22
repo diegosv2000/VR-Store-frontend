@@ -1,7 +1,7 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { InputForm } from 'components';
-import User from 'assets/user.svg';
 import { makeStyles } from '@material-ui/core';
+import axios from 'axios';
 
 const useStyles = makeStyles(() => ({
   formContainer: {
@@ -22,37 +22,12 @@ const useStyles = makeStyles(() => ({
     marginBottom: '1.5rem',
     color: '#1F1D21',
   },
-  profile: {
-    display:'flex',
-    flexDirection:'row',
-    alignItems:'center',
-    "& button":{
-      padding:'0.4rem 1rem',
-      fontWeight:'600',
-      background:'#2DEE7A',
-      border:'none',
-      borderRadius:'0.3rem',
-      margin:'0 1rem'
-    }
-  },
-  profileIMG: {
-    width: '2.7rem',
-    height: '2.7rem',
-    background: '#4B0483',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    borderRadius: '100%',
-    '& img': {
-      width: '0.8rem',
-    },
-  },
   inputContent: {
     display: 'grid',
-    gridTemplateColumns:'1fr 1fr',
+    gridTemplateColumns: '1fr 1fr',
     gridGap: '1rem',
     textAlign: 'left',
-    margin:'2rem auto 0'
+    margin: '2rem auto 0',
   },
   buttonForm: {
     padding: '0.3rem 0.6rem',
@@ -69,30 +44,120 @@ const useStyles = makeStyles(() => ({
 
 const EditProfile = () => {
   const classes = useStyles();
-  return (
-    <div className={classes.formContainer}>
-      <form className={classes.form}>
-        <h2 className={classes.titleForm}>Editar perfil</h2>
-        <div className={classes.profile}>
-          <div className={classes.profileIMG}>
-            <img src={User} alt="profileIMG" />
+  const [data, setData] = useState(false);
+  const [userId, setUserId] = useState(localStorage.getItem('idSeller'));
+  useEffect(() => {
+    let firstConfig = {
+      method: 'get',
+      url: `https://raumented.herokuapp.com/api/getSeller/${userId}`,
+      headers: {},
+    };
+
+    axios(firstConfig)
+      .then(function (response) {
+        setData({
+          dni: response.data.DNI,
+          name: response.data.Name,
+          contact: response.data.Contact,
+          email: response.data.Email,
+          password: response.data.password,
+        });
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+  }, []);
+  const setInput = (e) => {
+    setData({
+      ...data,
+      [e.target.name]: e.target.value,
+    });
+  };
+  const sendData = (e) => {
+    e.preventDefault();
+    console.log(data);
+
+    const newData = JSON.stringify({
+      DNI: data.dni,
+      Name: data.name,
+      Contact: data.contact,
+      Email: data.email,
+      Password: data.password,
+    });
+
+    const newConfig = {
+      method: 'put',
+      url: 'https://raumented.herokuapp.com/api/editSeller/GOEqJXoZ0hbSxXBYnBKl',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      data: newData,
+    };
+
+    axios(newConfig)
+      .then(function (response) {
+        alert(JSON.stringify(response.data));
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+  };
+  if (data) {
+    return (
+      <div className={classes.formContainer}>
+        <div className={classes.form}>
+          <h2 className={classes.titleForm}>Editar perfil</h2>
+          <div className={classes.inputContent}>
+            <InputForm
+              label="DNI"
+              placeholder="73452158"
+              type="text"
+              name="dni"
+              setData={setInput}
+              defaultValue={data.dni}
+            />
+            <InputForm
+              label="Nombre Completo"
+              placeholder="Miguel Andrade"
+              type="text"
+              name="name"
+              setData={setInput}
+              defaultValue={data.name}
+            />
+            <InputForm
+              label="Contacto"
+              placeholder="+51 994 155 456"
+              type="text"
+              name="contact"
+              setData={setInput}
+              defaultValue={data.contact}
+            />
+            <InputForm
+              label="Email"
+              placeholder="example@gmail.com"
+              type="email"
+              name="email"
+              setData={setInput}
+              defaultValue={data.email}
+            />
+            <InputForm
+              label="Contraseña"
+              placeholder="******"
+              type="password"
+              name="password"
+              setData={setInput}
+              defaultValue={data.password}
+            />
           </div>
-          <button>Subir foto</button>
+          <button className={classes.buttonForm} onClick={sendData}>
+            Registrarse
+          </button>
         </div>
-        <div className={classes.inputContent}>
-          <InputForm label="Nombres" placeholder="Miguel" type="text" />
-          <InputForm label="Apellidos" placeholder="Andrade" type="text" />
-          <InputForm
-            label="Email"
-            placeholder="example@gmail.com"
-            type="email"
-          />
-          <InputForm label="Contraseña" placeholder="******" type="password" />
-        </div>
-        <button className={classes.buttonForm}>Registrarse</button>
-      </form>
-    </div>
-  );
+      </div>
+    );
+  } else {
+    return <div>Cargando</div>;
+  }
 };
 
 export default EditProfile;
