@@ -48,7 +48,7 @@ const Card = (props) => {
       <div className={classes.titleCard}>{props.title}</div>
       <div className={classes.sectionCard}>{props.section}</div>
 
-      <button className={classes.delete} onClick={props.onClick}>Eliminar</button>
+      <button className={classes.delete} onClick={props.delete}>Eliminar</button>
     </div>
   );
 };

@@ -295,6 +295,21 @@ const Admin = () => {
         console.log(error);
       });
   }, [idAuth]);
+  const deleteCard = (idProducto) => {
+    let configDelete = {
+      method: 'delete',
+      url: `https://raumented.herokuapp.com/api/deleteProduct/${idAuth}/${idProducto}}`,
+      headers: {},
+    };
+
+    axios(configDelete)
+      .then(function (response) {
+        console.log(JSON.stringify(response.data));
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+  };
   return (
     <div className={classes.container}>
       <div className={classes.headerAdmin}>
@@ -313,9 +328,18 @@ const Admin = () => {
       <div className={classes.cardsContainer}>
         {products
           ? products.map((e) => {
-              return <Card title={e.name} key={e.id} />;
+              return (
+                <Card
+                  title={e.name}
+                  key={e.id}
+                  delete={(e) => {
+                    e.preventDefault();
+                    deleteCard(e.id);
+                  }}
+                />
+              );
             })
-          : 'Cargando...'}
+          : 'No hay productos disponibles...'}
       </div>
       <Modal
         aria-labelledby="transition-modal-title"
